@@ -1,9 +1,7 @@
-// import 'core-js/shim';
-console.log(11154);
-const man = {
-    name: '小王',
-    age: 18,
-    height: 175,
-}
+import 'core-js/fn/object/assign';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/Main';
 
-console.log(`${Object.values(man)}`)
+// Render the main component into the dom
+ReactDOM.render(<App />, document.getElementById('app'));
