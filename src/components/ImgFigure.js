@@ -37,6 +37,8 @@ class ImgFigure extends React.Component {
       ['MozT', 'msT', 'WebkitT', 't'].forEach(value => {
         styleObj[`${value}ransform`] = `rotate(${this.props.arrange.rotate}deg)`;
       });
+    } else {
+      styleObj.zIndex = 11;
     }
 
     var imgFigureClassName = 'img-figure';
