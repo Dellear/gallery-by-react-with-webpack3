@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const cssLoders = require('./cssloaders.conf');
 
+const LIMITURL = 20000;
 const isProduction =  function () {
   return process.env.NODE_ENV === JSON.stringify('production');
 };
@@ -48,7 +49,7 @@ module.exports = {
         {
           loader: 'url-loader',
           options: {
-            limit: 8192,
+            limit: LIMITURL,
             name: 'assets/images/[name]-[hash:8].[ext]',
           },
         },
@@ -60,7 +61,7 @@ module.exports = {
         {
           loader: 'url-loader',
           options: {
-            limit: 500,
+            limit: LIMITURL,
             name: 'assets/fonts/[name]-[hash:8].[ext]',
           },
         },

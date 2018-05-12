@@ -39,8 +39,4 @@ module.exports = merge(webpackBase, {
       chunks: ['vendor'],
     }),
   ].concat(webpackBase.plugins),
-  // externals: {
-  //   'react': 'React',
-  //   'react-dom': 'ReactDOM',
-  // },
 });
