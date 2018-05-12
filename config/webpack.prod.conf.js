@@ -9,7 +9,7 @@ const webpackBase = require('./webpack.base.conf');
 module.exports = merge(webpackBase, {
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: '[name]-[hash].min.js',
+    filename: '[name]-[chunkhash].min.js',
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
