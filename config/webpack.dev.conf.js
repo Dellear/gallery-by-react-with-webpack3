@@ -16,14 +16,11 @@ module.exports = merge(webpackBase, {
   plugins: [
     // 使用browser-sync实时刷新页面
     new BrowserSyncPlugin({
-      // host: 'localhost',
-      // port: 3000,
       server: {
         baseDir: './',
         https: false,
         // middleware: Proxy
       },
-      // open: false,
       open: 'external',
       ghostMode: false,
       browser: chrome,

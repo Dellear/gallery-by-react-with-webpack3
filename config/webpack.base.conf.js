@@ -78,7 +78,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',//生成的html及存放路径，相对于path
       template: 'src/index.ejs',//载入文件及路径
-      hash: true,
     }),
 
     new webpack.DefinePlugin({
