@@ -4,15 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean": "./node_modules/.bin/rimraf dist/",
-    "build": "./node_modules/.bin/webpack --config config/webpack.prod.conf.js",
-    "dev": "./node_modules/.bin/webpack --config config/webpack.dev.conf.js",
+    "clean": "rimraf dist/",
+    "build": "webpack --config config/webpack.prod.conf.js",
+    "dev": "webpack --config config/webpack.dev.conf.js",
+    "prestart": "yarn",
     "start": "npm run clean && npm run dev",
     "serve": "npm run clean && npm run dev",
     "dist": "npm run clean && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "yarninstall": "npm install yarn",
-    "yarn": "./node_modules/.bin/yarn"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Shengqiang Wang",
   "license": "ISC",
