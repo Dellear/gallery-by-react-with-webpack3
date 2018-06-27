@@ -29,5 +29,5 @@ module.exports = merge(webpackBase, {
 
     }),
 
-  ].concat(webpackBase.plugins),
+  ],
 });

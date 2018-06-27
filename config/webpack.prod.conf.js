@@ -4,6 +4,9 @@ const merge = require('webpack-merge');
 const path = require('path');
 const webpack = require('webpack');
 const webpackBase = require('./webpack.base.conf');
+const pkg = require('../package.json');
+
+const BANNER = `${pkg.name} v${pkg.version} | ${pkg.license} License | ${new Date().toLocaleDateString()}`
 
 
 module.exports = merge(webpackBase, {
@@ -12,6 +15,7 @@ module.exports = merge(webpackBase, {
     filename: '[name]-[chunkhash].min.js',
   },
   plugins: [
+    new webpack.BannerPlugin(BANNER),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
@@ -38,5 +42,5 @@ module.exports = merge(webpackBase, {
       name: 'manifest',
       chunks: ['vendor'],
     }),
-  ].concat(webpackBase.plugins),
+  ],
 });
