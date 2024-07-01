@@ -85,17 +85,13 @@ class AppComponent extends React.Component {
       top: halfStageH - halfImgH,
     }
 
-    // 计算左侧、右侧区域图片排布位置的取值范围
-    this.props.constant.hPosRange.leftSecX = [-halfImgW, halfStageW - halfImgW * 3];
-    this.props.constant.hPosRange.rightSecX = [halfStageW + halfImgW, stageW - halfImgW];
-    this.props.constant.hPosRange.y = [-halfImgH, stageH - halfImgH];
+    // 计算左侧、右侧、上侧、下侧区域图片排布位置的取值范围
+    const posRange = this.props.constant.posRange;
+    posRange.leftSecX = [-halfImgW, halfStageW - halfImgW * 3];
+    posRange.rightSecX = [halfStageW + halfImgW, stageW - halfImgW];
+    posRange.topSecY = [-halfImgH, halfStageH - halfImgH];
+    posRange.bottomSecY = [halfStageH - halfImgH, stageH - halfImgH];
 
-    // 计算上侧区域图片排布位置的取值范围
-    this.props.constant.vPosRange.topY = [-halfImgH, halfStageH - halfImgH * 3];
-    this.props.constant.vPosRange.x = [halfStageW - imgW, halfImgW];
-
-
-    // this.rearrange(getRangeRandom(0, imageDatas.length - 1));
     this.rearrange(0);
   }
 
@@ -143,70 +139,46 @@ class AppComponent extends React.Component {
     let imgsArrangeArr = this.state.imgsArrangeArr,
       constant = this.props.constant,
       centerPos = constant.centerPos,
-      hPosRange = constant.hPosRange,
-      vPosRange = constant.vPosRange,
-      hPosRangeLeftSecX = hPosRange.leftSecX,
-      hPosRangeRightSecX = hPosRange.rightSecX,
-      hPosRangeY = hPosRange.y,
-      vPosRangeTopY = vPosRange.topY,
-      vPosRangeX = vPosRange.x,
-
-      imgsArrangeTopArr = [],
-      topImgNum = Math.floor(Math.random() * 2), // 取一个或者不取
-      topImgSpliceIndex = 0,
-
-      imgsArrangeCenterArr = imgsArrangeArr.splice(centerIndex, 1);
-
-    // 首选居中 centerIndex 的图片
-    imgsArrangeCenterArr[0] = {
-      pos: centerPos,
-      rotate: 0,
-      isCenter: true,
-    }
-
-    // 取出要布局上侧的图片的状态信息
-    topImgSpliceIndex = Math.floor(Math.random() * imgsArrangeArr.length );
-
-    imgsArrangeTopArr = imgsArrangeArr.splice(topImgSpliceIndex, topImgNum);
-
-    // 布局位于上侧的图片
-    imgsArrangeTopArr.forEach((value, index) => {
-      imgsArrangeTopArr[index] = {
-        pos: {
-          top: getRangeRandom(vPosRangeTopY[0], vPosRangeTopY[1]),
-          left: getRangeRandom(vPosRangeX[0], vPosRangeX[1]),
-        },
-        rotate: get30DegRandom(),
-        isCenter: false,
-      }
-    });
+      posRange = constant.posRange;
 
     // 布局左右两侧的图片
     for (let i = 0, len = imgsArrangeArr.length, k = len / 2; i < len; i++) {
-      let hPosRangeLORX = null;
+      let posRangeX = [0, 0], posRangeY = [0, 0];
 
-      //前半部分布局左边，后半部分布局右边
-      if (i < k) {
-        hPosRangeLORX = hPosRangeLeftSecX;
+      if (i !== centerIndex) {
+        //左上、左下、右上、右下
+        if (i < k) {
+          posRangeX = posRange.leftSecX;
+          if (i < k/2) {
+            posRangeY = posRange.topSecY;
+          } else {
+            posRangeY = posRange.bottomSecY;
+          }
+        } else {
+          posRangeX = posRange.rightSecX;
+          if (len - i < k/2) {
+            posRangeY = posRange.bottomSecY;
+          } else {
+            posRangeY = posRange.topSecY;
+          }
+        }
+
+        imgsArrangeArr[i] = {
+          pos: {
+            top: getRangeRandom(posRangeY[0], posRangeY[1]),
+            left: getRangeRandom(posRangeX[0], posRangeX[1]),
+          },
+          rotate: get30DegRandom(),
+          isCenter: false,
+        }
       } else {
-        hPosRangeLORX = hPosRangeRightSecX;
-      }
-
-      imgsArrangeArr[i] = {
-        pos: {
-          top: getRangeRandom(hPosRangeY[0], hPosRangeY[1]),
-          left: getRangeRandom(hPosRangeLORX[0], hPosRangeLORX[1]),
-        },
-        rotate: get30DegRandom(),
-        isCenter: false,
+        imgsArrangeArr[i] = {
+          pos: centerPos,
+          rotate: 0,
+          isCenter: true,
+        }
       }
     }
-
-    if (imgsArrangeTopArr && imgsArrangeTopArr[0]) {
-      imgsArrangeArr.splice(topImgSpliceIndex, 0, imgsArrangeTopArr[0]);
-    }
-
-    imgsArrangeArr.splice(centerIndex, 0, imgsArrangeCenterArr[0]);
 
     this.setState({ imgsArrangeArr });
 
@@ -257,14 +229,11 @@ AppComponent.defaultProps = {
       left: 0,
       right: 0,
     },
-    hPosRange: { // 水平方向的取值范围
+    posRange: { // 取值范围
       leftSecX: [0, 0],
       rightSecX: [0, 0],
-      y: [0, 0],
-    },
-    vPosRange: {  // 垂直方向的取值范围
-      x: [0, 0],
-      topY: [0, 0],
+      topSecY: [0, 0],
+      bottomSecY: [0, 0],
     },
   },
 };
